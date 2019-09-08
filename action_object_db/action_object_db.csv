@@ -1,0 +1,9 @@
+open,browser,start microsoft-edge:,0
+open,website,start microsoft-edge:,website URL
+open,word,start winword,0
+open,document,start winword,document filename
+open,excel,start excel,0
+open,spreadsheet,start excel,spreadsheet filename
+open,calculator,calc,0
+open,explorer,start explorer,0
+open,whatsapp,C:\Users\Devian\AppData\Local\WhatsApp\WhatsApp.exe,0

@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>VIRTUAL CONTROLLER:</title>
+        <meta name="viewport" content="width=device-width, initial-scale=0.5, maximum-scale=0.5">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+		<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+    	<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js"></script>
+		<script type="text/javascript">
+			$(document).ready(function(){
+				// sending a connect request to the server.
+				var socket = io.connect('http://192.168.1.4:5000');
+				// An event handler for a change of value
+				$('input.sync').on('input', function(event) {
+					socket.emit('value changed', {who: $(this).attr('id'), data: $(this).val()});
+					return false;
+				});
+				socket.on('after connect', function(msg){
+					console.log('After connect', msg);
+				});
+				// socket.on('update value', function(msg) {
+				// 	console.log('Slider value updated');
+				// 	$('#'+msg.who).val(msg.data);
+				// });
+                socket.on('command detected', function(msg) {
+					$('#text').val('');
+                    $("#log").focus();
+                    setTimeout(function(){
+                        $("#text").focus();
+                    }, 1000);
+
+
+				});
+			});
+
+			function focusOnText() {
+                $("#text").focus();
+            }
+		</script>
+    <style>
+        body{
+            background: #fff;
+        }
+        .box1 {
+            padding: 40px 20px 20px 20px;
+        }
+
+        .box1 h1 {
+            font-size: 23px;
+            color: #777;
+            text-align: center;
+            margin-bottom: 50px;
+            border-bottom: 1px solid #e5e5e5;
+            padding-bottom: 20px;
+            margin-bottom: 20px;
+        }
+
+        .box1 form label{
+            font-size: 18px;
+            color: #777;
+        }
+        .box1 form input[type='text'],
+        .box1 form textarea{
+            font-size: 18px;
+            color: #333;
+            width: 100%;
+            border-radius: 5px;
+            border: 1px solid #e5e5e5;
+            padding: 5px;
+
+        }
+
+        .box1 form input[type='text']:focus,
+        .box1 form textarea:focus{
+            border: 1px solid #565656;
+            outline: none;
+
+        }
+
+        .box1 form textarea{
+            border-radius: 0;
+            border: none;
+            padding: 0;
+            color: #999;
+
+        }
+
+
+
+        .box1 form #submit, .box1 form .button {
+                border-radius: 5px;
+                border: none;
+                font-size: 18px;
+                padding: 10px 0;
+                background: cadetblue;
+                color: #fff;
+                display: block;
+                width: 200px;
+                margin: 0 auto;
+                text-decoration: none;
+                text-align: center;
+            }
+
+        .box1 form #submit:hover, .box1 form .button{
+            opacity: 0.8;
+        }
+
+        .box1 form .button.less{
+            margin: 0;
+            text-align: center;
+            width: 100px;
+            opacity: 0.5;
+        }
+
+        .box1 form .button.less:hover{
+            opacity: 0.3;
+        }
+
+        .box1 form .button-circular{
+            width: 100%;
+            height: auto;
+        }
+
+    </style>
+    </head>
+    <body style='width:100%; margin:0px;'>
+        <div class="container">
+			<div class="col align-self-center box1">
+				<h1 id="title">VIRTUAL CONTROLLER</h1>
+				<form>
+                    <div class="form-group">
+                        <input type="text" id="log" placeholder="Logs">
+                    </div>
+					<div class="form-group">
+						<input type="text" class='sync' id="text" placeholder="Enter your command here">
+					</div>
+
+					<img class="button-circular" onclick="focusOnText()" src="{{url_for('static', filename='cortana_animated_icon.gif')}}" />
+				</form>
+			</div>
+        </div>
+    </body>
+</html>
